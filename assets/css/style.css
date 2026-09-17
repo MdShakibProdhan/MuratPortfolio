@@ -627,6 +627,16 @@ section {
     font-size: 0.95rem;
   }
 
+  .lang-dropdown .lang-menu {
+    margin: 0.5rem 0 0 0 !important;
+    background-color: var(--color-white) !important;
+    border-radius: var(--radius-sm);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    max-height: 240px;
+    overflow-y: auto;
+    width: 100%;
+  }
+
   .mobile-nav-actions {
     display: flex;
     flex-direction: column;
