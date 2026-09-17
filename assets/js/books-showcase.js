@@ -1,9 +1,12 @@
 /**
  * 3D Interactive Books Showcase (Three.js)
- * Ported from VengeanceUI BooksShowcase for Nexus Advisory
+ * High-Definition, Smooth 60fps Mobile & Desktop Engine
+ * Nexus Advisory
  */
 
 (function () {
+  'use strict';
+
   const DEFAULT_BOOKS = [
     {
       id: 'book-1',
@@ -17,7 +20,7 @@
       backInk: '255,255,255',
       spineBg: '#071F1D',
       spineInk: '#2FBF9F',
-      spineFont: '700 38px Inter, sans-serif',
+      spineFont: '700 36px Inter, sans-serif',
       chapters: [
         'Strategic Alignment & Clear Vision',
         'Operational Friction Points',
@@ -39,7 +42,7 @@
       backInk: '255,255,255',
       spineBg: '#0B2B28',
       spineInk: '#FFFFFF',
-      spineFont: '700 38px Inter, sans-serif',
+      spineFont: '700 36px Inter, sans-serif',
       chapters: [
         'Rethinking Traditional Consulting',
         'High-Touch vs. High-Volume',
@@ -61,7 +64,7 @@
       backInk: '255,255,255',
       spineBg: '#0D1413',
       spineInk: '#2FBF9F',
-      spineFont: '700 38px Inter, sans-serif',
+      spineFont: '700 36px Inter, sans-serif',
       chapters: [
         'Global Market Landscape',
         'Capital Efficiency Metrics',
@@ -83,7 +86,7 @@
       backInk: '255,255,255',
       spineBg: '#111A24',
       spineInk: '#68B5FF',
-      spineFont: '700 38px Inter, sans-serif',
+      spineFont: '700 36px Inter, sans-serif',
       chapters: [
         'Foundations of Scale',
         'Process Optimization',
@@ -96,7 +99,7 @@
   ];
 
   class Spring {
-    constructor(v, k = 120, d = 14) {
+    constructor(v, k = 100, d = 13) {
       this.v = v;
       this.t = v;
       this.vel = 0;
@@ -171,19 +174,26 @@
 
     const books = DEFAULT_BOOKS;
     const RM = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const lowPowerDevice = RM || window.matchMedia('(max-width: 768px)').matches || (navigator.hardwareConcurrency || 8) <= 4;
     const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
 
     let renderer;
     try {
-      renderer = new THREE.WebGLRenderer({ canvas: canvasEl, antialias: !lowPowerDevice, alpha: true });
+      renderer = new THREE.WebGLRenderer({
+        canvas: canvasEl,
+        antialias: true, // Always keep antialias on for razor-sharp rendering on mobile retina screens
+        alpha: true,
+        powerPreference: 'high-performance',
+      });
     } catch (err) {
       console.warn('BooksShowcase: WebGL initialization failed', err);
       return;
     }
 
     const dims = { w: root.offsetWidth || 1000, h: root.offsetHeight || 650 };
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, lowPowerDevice ? 1 : 1.5));
+    // Set high-res pixel ratio (up to 2x for sharp Retina/OLED mobile view)
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    renderer.setPixelRatio(dpr);
+
     if (THREE.SRGBColorSpace) {
       renderer.outputColorSpace = THREE.SRGBColorSpace;
     } else if (THREE.sRGBEncoding) {
@@ -191,11 +201,17 @@
     }
     if (THREE.ACESFilmicToneMapping) {
       renderer.toneMapping = THREE.ACESFilmicToneMapping;
-      renderer.toneMappingExposure = 0.95;
+      renderer.toneMappingExposure = 1.0;
     }
-    renderer.shadowMap.enabled = !lowPowerDevice;
-    if (THREE.PCFShadowMap) renderer.shadowMap.type = THREE.PCFShadowMap;
-    const ANISO = renderer.capabilities ? renderer.capabilities.getMaxAnisotropy() : 1;
+
+    renderer.shadowMap.enabled = true;
+    if (THREE.PCFSoftShadowMap) {
+      renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    } else if (THREE.PCFShadowMap) {
+      renderer.shadowMap.type = THREE.PCFShadowMap;
+    }
+
+    const ANISO = renderer.capabilities ? renderer.capabilities.getMaxAnisotropy() : 4;
 
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(26, dims.w / dims.h, 0.1, 100);
@@ -221,8 +237,8 @@
       x.fillStyle = g;
       x.fillRect(0, 0, 512, 256);
       envBlob(x, 140, 66, 95, '255,255,255', 0.95);
-      envBlob(x, 405, 84, 55, '47,191,159', 0.55);
-      envBlob(x, 256, 150, 120, '47,191,159', 0.28);
+      envBlob(x, 405, 84, 55, '47,191,159', 0.65);
+      envBlob(x, 256, 150, 120, '47,191,159', 0.35);
       const tx = new THREE.CanvasTexture(c);
       tx.mapping = THREE.EquirectangularReflectionMapping;
       if (THREE.PMREMGenerator) {
@@ -233,23 +249,23 @@
       }
     })();
 
-    const hemi = new THREE.HemisphereLight(0xb4e8df, 0x051413, 0.38);
+    const hemi = new THREE.HemisphereLight(0xb4e8df, 0x051413, 0.45);
     scene.add(hemi);
 
-    const key = new THREE.DirectionalLight(0xffffff, 0.9);
-    key.position.set(3.5, 5, 6);
-    key.castShadow = !lowPowerDevice;
+    const key = new THREE.DirectionalLight(0xffffff, 1.0);
+    key.position.set(3.5, 5.5, 6);
+    key.castShadow = true;
     if (key.shadow) {
       key.shadow.mapSize.set(1024, 1024);
-      key.shadow.bias = -0.0004;
+      key.shadow.bias = -0.0003;
     }
     scene.add(key);
 
-    const fillLight = new THREE.DirectionalLight(0xa5dfd4, 0.25);
-    fillLight.position.set(-4, 1, 4);
+    const fillLight = new THREE.DirectionalLight(0xa5dfd4, 0.35);
+    fillLight.position.set(-4, 1.5, 4);
     scene.add(fillLight);
 
-    const rim = new THREE.DirectionalLight(0x2fbf9f, 0.4);
+    const rim = new THREE.DirectionalLight(0x2fbf9f, 0.5);
     rim.position.set(-2, 3, -5);
     scene.add(rim);
 
@@ -374,16 +390,16 @@
       x.fill();
 
       x.strokeStyle = 'rgba(47,191,159,0.35)';
-      x.lineWidth = 4;
+      x.lineWidth = 5;
       x.strokeRect(50, 50, w - 100, h - 100);
 
       x.fillStyle = '#2FBF9F';
-      x.font = '700 24px Inter, sans-serif';
+      x.font = '700 26px Inter, sans-serif';
       x.textAlign = 'center';
-      x.fillText('NEXUS ADVISORY EXECUTIVE SERIES', w / 2, 130);
+      x.fillText('ULUPINAR EXECUTIVE SERIES', w / 2, 130);
 
       x.fillStyle = '#FFFFFF';
-      x.font = '700 68px Georgia, serif';
+      x.font = '700 70px Georgia, serif';
       const words = o.title.split(' ');
       let line = '';
       const lines = [];
@@ -396,15 +412,15 @@
       });
       if (line) lines.push(line);
 
-      const startY = h * 0.44 - ((lines.length - 1) * 80) / 2;
-      lines.forEach((l, i) => x.fillText(l, w / 2, startY + i * 80));
+      const startY = h * 0.44 - ((lines.length - 1) * 82) / 2;
+      lines.forEach((l, i) => x.fillText(l, w / 2, startY + i * 82));
 
       x.fillStyle = 'rgba(255,255,255,0.85)';
-      x.font = '500 36px Inter, sans-serif';
-      x.fillText(o.author, w / 2, startY + lines.length * 80 + 75);
+      x.font = '500 38px Inter, sans-serif';
+      x.fillText(o.author, w / 2, startY + lines.length * 82 + 75);
 
       x.fillStyle = '#2FBF9F';
-      x.fillRect(w / 2 - 40, h - 140, 80, 5);
+      x.fillRect(w / 2 - 40, h - 140, 80, 6);
     }
 
     function paintBack(x, w, h, o) {
@@ -450,7 +466,7 @@
       x.font = o.spineFont;
       drawSpaced(x, o.title.toUpperCase(), -h * 0.1, 15, 6);
       x.globalAlpha = 0.85;
-      x.font = '600 25px Inter, sans-serif';
+      x.font = '600 26px Inter, sans-serif';
       drawSpaced(x, o.author.toUpperCase(), h * 0.325, 9, 4);
       x.globalAlpha = 1;
       x.restore();
@@ -523,8 +539,8 @@
       T = 0.34,
       CT = 0.032,
       OV = 0.05;
-    const PAGE_N = lowPowerDevice ? 5 : 8,
-      BACK_PAGE_N = lowPowerDevice ? 3 : 4,
+    const PAGE_N = 8,
+      BACK_PAGE_N = 4,
       PW = W - 0.02,
       PH = H - 0.02;
     const BLOCK_D = 0.245,
@@ -582,7 +598,7 @@
       paintSpine(cS.getContext('2d'), 220, 1536, {
         spineBg: cfg.spineBg || '#071F1D',
         spineInk: cfg.spineInk || '#2FBF9F',
-        spineFont: cfg.spineFont || '700 38px Inter, sans-serif',
+        spineFont: cfg.spineFont || '700 36px Inter, sans-serif',
         title: cfg.title,
         author: cfg.author,
       });
@@ -592,7 +608,7 @@
       backPivot.position.set(-W / 2 - HINGE_OVERLAP, 0, BPIVOT_Z);
       const backMesh = new THREE.Mesh(coverGeo, [mEdge, mEdge, mEdge, mEdge, endpaperMat, mBack]);
       backMesh.position.x = (W + OV) / 2;
-      backMesh.castShadow = backMesh.receiveShadow = !lowPowerDevice;
+      backMesh.castShadow = backMesh.receiveShadow = true;
       backPivot.add(backMesh);
       floatG.add(backPivot);
 
@@ -600,18 +616,18 @@
       pivot.position.set(-W / 2 - HINGE_OVERLAP, 0, PIVOT_Z);
       const frontMesh = new THREE.Mesh(coverGeo, [mEdge, mEdge, mEdge, mEdge, mFront, endpaperMat]);
       frontMesh.position.x = (W + OV) / 2;
-      frontMesh.castShadow = frontMesh.receiveShadow = !lowPowerDevice;
+      frontMesh.castShadow = frontMesh.receiveShadow = true;
       pivot.add(frontMesh);
       floatG.add(pivot);
 
       const spine = new THREE.Mesh(spineGeo, mSpine);
       spine.position.set(-W / 2 - 0.013, 0, 0);
-      spine.castShadow = !lowPowerDevice;
+      spine.castShadow = true;
       floatG.add(spine);
 
       const block = new THREE.Mesh(blockGeo, [striMatV, paperFlat, striMatH, striMatH, paperFlat, paperFlat]);
       block.position.set(-0.0075, 0, BLOCK_Z);
-      block.castShadow = block.receiveShadow = !lowPowerDevice;
+      block.castShadow = block.receiveShadow = true;
       floatG.add(block);
 
       const pages = [],
@@ -655,13 +671,13 @@
       floatG.add(hit);
 
       const springs = {
-        px: new Spring(0, 17, 6.8),
-        py: new Spring(0, 17, 6.8),
-        pz: new Spring(0, 17, 6.8),
-        rx: new Spring(0, 17, 6.8),
-        ry: new Spring(0, 17, 6.8),
-        rz: new Spring(0, 17, 6.8),
-        sc: new Spring(1, 17, 6.8),
+        px: new Spring(0, 100, 13),
+        py: new Spring(0, 100, 13),
+        pz: new Spring(0, 100, 13),
+        rx: new Spring(0, 100, 13),
+        ry: new Spring(0, 100, 13),
+        rz: new Spring(0, 100, 13),
+        sc: new Spring(1, 100, 13),
         tiltX: new Spring(0, 120, 13),
         tiltY: new Spring(0, 120, 13),
         lift: new Spring(0, 120, 13),
@@ -792,26 +808,26 @@
     function computeSlots() {
       const a = dims.w / Math.max(1, dims.h);
       const portrait = a < 0.92;
-      const fit = portrait ? clamp(a / 1.08, 0.4, 0.76) : clamp(a / 1.62, 0.55, 1);
+      const fit = portrait ? clamp(a / 1.05, 0.42, 0.78) : clamp(a / 1.62, 0.55, 1);
       bookRoot.scale.setScalar(fit);
       bookRoot.position.y = -(1 - fit) * 0.28;
       SLOTS.portrait = portrait;
 
-      SLOTS.hero = SLOTS.portrait
-        ? [
-          { p: [-1.36, -0.58, -0.12], r: [-0.045, 0.4, 0.185], s: 1.25 },
-          { p: [0.2, -0.22, 0.6], r: [-0.05, -0.1, -0.035], s: 1.35 },
-          { p: [1.62, -0.62, -0.34], r: [-0.045, -0.42, -0.17], s: 1.25 },
-        ]
-        : [
+      if (portrait) {
+        // High-quality spacing for mobile screens
+        SLOTS.hero = [
+          { p: [-1.2, -0.48, -0.15], r: [-0.045, 0.42, 0.18], s: 1.2 },
+          { p: [0.1, -0.18, 0.58], r: [-0.05, -0.05, -0.02], s: 1.32 },
+          { p: [1.4, -0.52, -0.32], r: [-0.045, -0.42, -0.17], s: 1.2 },
+        ];
+        // In detail view on mobile, lift book higher so detail panel sits comfortably below
+        SLOTS.detail = { p: [0, 0.58, 0.82], r: [-0.02, -0.4, 0.06], s: 0.76 };
+      } else {
+        SLOTS.hero = [
           { p: [-2.05, -0.58, -0.12], r: [-0.045, 0.4, 0.185], s: 1.22 },
           { p: [0.25, -0.36, 0.6], r: [-0.05, -0.1, -0.035], s: 1.32 },
           { p: [2.35, -0.64, -0.34], r: [-0.045, -0.42, -0.17], s: 1.22 },
         ];
-
-      if (SLOTS.portrait) {
-        SLOTS.detail = { p: [0, 0.45, 0.8], r: [-0.02, -0.4, 0.06], s: 0.72 };
-      } else {
         SLOTS.detail = { p: [-1.68, 0.0, 0.85], r: [0.02, -0.44, 0.08], s: 1.06 };
       }
     }
@@ -963,9 +979,9 @@
     function camTo(mode) {
       if (mode === 'detail') {
         camX.t = SLOTS.portrait ? 0 : -0.25;
-        camZ.t = SLOTS.portrait ? 10.4 : 9.6;
+        camZ.t = SLOTS.portrait ? 10.2 : 9.6;
         lookX.t = SLOTS.portrait ? 0 : -0.35;
-        lookY.t = SLOTS.portrait ? (SLOTS.portrait ? 0.35 : 0) : 0.15;
+        lookY.t = SLOTS.portrait ? 0.38 : 0.15;
       } else {
         camX.t = 0;
         camZ.t = 9.6;
@@ -1206,7 +1222,7 @@
       ptr.id = null;
       orbit.drag = false;
       if (dragBook) {
-        const slop = isTouch() ? 26 : 14;
+        const slop = isTouch() ? 24 : 12;
         const limit = isTouch() ? 650 : 450;
         const wasDrag = ptr.moved > slop;
         dragBook.springs.drag.t = 0;
@@ -1367,7 +1383,7 @@
       }
       rafId = requestAnimationFrame(animate);
       const now = timestamp || performance.now();
-      const dt = Math.min((now - lastTime) / 1000, 0.05);
+      const dt = Math.min((now - lastTime) / 1000, 0.033);
       lastTime = now;
       const t = now * 0.001;
 
@@ -1432,7 +1448,8 @@
       const r = root.getBoundingClientRect();
       dims.w = Math.max(1, Math.round(r.width));
       dims.h = Math.max(1, Math.round(r.height));
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, lowPowerDevice ? 1 : 1.5));
+      const currentDpr = Math.min(window.devicePixelRatio || 1, 2);
+      renderer.setPixelRatio(currentDpr);
       renderer.setSize(dims.w, dims.h);
       camera.aspect = dims.w / dims.h;
       camera.updateProjectionMatrix();
