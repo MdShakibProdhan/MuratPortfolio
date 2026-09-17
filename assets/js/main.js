@@ -354,6 +354,243 @@ document.addEventListener('DOMContentLoaded', () => {
       }, 700);
     });
   }
+
+  // 8. Azuki Glassmorphic Music Player Controller
+  const musicTracks = [
+    {
+      title: "Maker of this webpage",
+      artist: "Md Shakib Prodhan",
+      src: "https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-112191.mp3"
+    },
+    {
+      title: "Maker of this webpage",
+      artist: "Md Shakib Prodhan",
+      src: "https://cdn.pixabay.com/download/audio/2022/01/18/audio_d0a13f69d2.mp3?filename=ambient-piano-amp-strings-10711.mp3"
+    },
+    {
+      title: "Maker of this webpage",
+      artist: "Md Shakib Prodhan",
+      src: "https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8a73467.mp3?filename=chill-abstract-intention-12099.mp3"
+    }
+  ];
+
+  const musicPlayerCard = document.getElementById('musicPlayerCard');
+  const musicAudio = document.getElementById('musicPlayerAudio');
+  const musicToggleBtn = document.getElementById('musicPlayerToggle');
+  const musicTrackTitle = document.getElementById('musicTrackTitle');
+  const musicTrackArtist = document.getElementById('musicTrackArtist');
+  const musicPlayBtn = document.getElementById('musicPlayBtn');
+  const musicPrevBtn = document.getElementById('musicPrevBtn');
+  const musicNextBtn = document.getElementById('musicNextBtn');
+  const musicProgressWrap = document.getElementById('musicProgressWrap');
+  const musicProgressFill = document.getElementById('musicProgressFill');
+
+  if (musicPlayerCard && musicAudio) {
+    let currentTrackIdx = 0;
+    let isMusicPlaying = false;
+    let isCollapsed = false;
+
+    // Load track
+    function loadTrack(index, shouldAutoPlay = false) {
+      currentTrackIdx = (index + musicTracks.length) % musicTracks.length;
+      const currentTrack = musicTracks[currentTrackIdx];
+      
+      // Permanently lock title & subtitle
+      if (musicTrackTitle) musicTrackTitle.textContent = "Maker of this webpage";
+      if (musicTrackArtist) musicTrackArtist.textContent = "Md Shakib Prodhan";
+
+      musicAudio.src = currentTrack.src;
+      musicAudio.load();
+      if (musicProgressFill) musicProgressFill.style.width = '0%';
+
+      if (shouldAutoPlay) {
+        playMusic();
+      }
+    }
+
+    function playMusic() {
+      const playPromise = musicAudio.play();
+      if (playPromise !== undefined) {
+        playPromise.then(() => {
+          isMusicPlaying = true;
+          musicPlayerCard.classList.add('is-playing');
+          if (musicPlayBtn) {
+            musicPlayBtn.querySelector('.icon-play')?.classList.add('d-none');
+            musicPlayBtn.querySelector('.icon-pause')?.classList.remove('d-none');
+          }
+        }).catch(() => {
+          // Autoplay or playback restriction handled
+          isMusicPlaying = false;
+          musicPlayerCard.classList.remove('is-playing');
+        });
+      }
+    }
+
+    function pauseMusic() {
+      musicAudio.pause();
+      isMusicPlaying = false;
+      musicPlayerCard.classList.remove('is-playing');
+      if (musicPlayBtn) {
+        musicPlayBtn.querySelector('.icon-play')?.classList.remove('d-none');
+        musicPlayBtn.querySelector('.icon-pause')?.classList.add('d-none');
+      }
+    }
+
+    function togglePlay() {
+      if (isMusicPlaying) {
+        pauseMusic();
+      } else {
+        playMusic();
+      }
+    }
+
+    // Play / Pause Click
+    if (musicPlayBtn) {
+      musicPlayBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        togglePlay();
+      });
+    }
+
+    // Next Button Click — Skip Forward 5 Seconds
+    if (musicNextBtn) {
+      musicNextBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (musicAudio.duration) {
+          musicAudio.currentTime = Math.min(musicAudio.duration, musicAudio.currentTime + 5);
+          const progressPct = (musicAudio.currentTime / musicAudio.duration) * 100;
+          if (musicProgressFill) musicProgressFill.style.width = `${progressPct}%`;
+        }
+      });
+    }
+
+    // Prev Button Click — Skip Backward 5 Seconds
+    if (musicPrevBtn) {
+      musicPrevBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (musicAudio.duration) {
+          musicAudio.currentTime = Math.max(0, musicAudio.currentTime - 5);
+          const progressPct = (musicAudio.currentTime / musicAudio.duration) * 100;
+          if (musicProgressFill) musicProgressFill.style.width = `${progressPct}%`;
+        }
+      });
+    }
+
+    // Toggle Collapse / Expand
+    if (musicToggleBtn) {
+      musicToggleBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        isCollapsed = !isCollapsed;
+        if (isCollapsed) {
+          musicPlayerCard.classList.add('is-collapsed');
+          musicToggleBtn.setAttribute('aria-label', 'Expand player');
+          musicToggleBtn.setAttribute('aria-expanded', 'false');
+          musicToggleBtn.querySelector('.icon-minus')?.classList.add('d-none');
+          musicToggleBtn.querySelector('.icon-plus')?.classList.remove('d-none');
+        } else {
+          musicPlayerCard.classList.remove('is-collapsed');
+          musicToggleBtn.setAttribute('aria-label', 'Collapse player');
+          musicToggleBtn.setAttribute('aria-expanded', 'true');
+          musicToggleBtn.querySelector('.icon-minus')?.classList.remove('d-none');
+          musicToggleBtn.querySelector('.icon-plus')?.classList.add('d-none');
+        }
+      });
+    }
+
+    // Time update for seek progress
+    musicAudio.addEventListener('timeupdate', () => {
+      if (musicAudio.duration) {
+        const progressPct = (musicAudio.currentTime / musicAudio.duration) * 100;
+        if (musicProgressFill) {
+          musicProgressFill.style.width = `${progressPct}%`;
+        }
+        if (musicProgressWrap) {
+          musicProgressWrap.setAttribute('aria-valuenow', Math.round(progressPct));
+        }
+      }
+    });
+
+    // Auto advance on track ended
+    musicAudio.addEventListener('ended', () => {
+      loadTrack(currentTrackIdx + 1, true);
+    });
+
+    // Audio state sync
+    musicAudio.addEventListener('play', () => {
+      isMusicPlaying = true;
+      musicPlayerCard.classList.add('is-playing');
+      musicPlayBtn?.querySelector('.icon-play')?.classList.add('d-none');
+      musicPlayBtn?.querySelector('.icon-pause')?.classList.remove('d-none');
+    });
+
+    musicAudio.addEventListener('pause', () => {
+      isMusicPlaying = false;
+      musicPlayerCard.classList.remove('is-playing');
+      musicPlayBtn?.querySelector('.icon-play')?.classList.remove('d-none');
+      musicPlayBtn?.querySelector('.icon-pause')?.classList.add('d-none');
+    });
+
+    // Seek clicking
+    if (musicProgressWrap) {
+      musicProgressWrap.addEventListener('click', (e) => {
+        if (!musicAudio.duration) return;
+        const rect = musicProgressWrap.getBoundingClientRect();
+        const clickRatio = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+        musicAudio.currentTime = clickRatio * musicAudio.duration;
+      });
+    }
+
+    // Avatar persistent hover & touch toggle handler
+    const musicAvatarWrapper = document.getElementById('musicAvatarWrapper');
+    if (musicAvatarWrapper) {
+      let closeTimeout = null;
+
+      // Keep open on mouseenter
+      musicAvatarWrapper.addEventListener('mouseenter', () => {
+        if (closeTimeout) {
+          clearTimeout(closeTimeout);
+          closeTimeout = null;
+        }
+        musicAvatarWrapper.classList.add('is-active');
+      });
+
+      // Linger for 1200ms before closing on mouseleave so users have plenty of time to click
+      musicAvatarWrapper.addEventListener('mouseleave', () => {
+        if (closeTimeout) clearTimeout(closeTimeout);
+        closeTimeout = setTimeout(() => {
+          musicAvatarWrapper.classList.remove('is-active');
+        }, 1200);
+      });
+
+      // Toggle permanently on avatar click (touch / desktop)
+      musicAvatarWrapper.addEventListener('click', (e) => {
+        const link = e.target.closest('.avatar-popup-circle');
+        if (link) {
+          // If a link was clicked, allow standard navigation in new tab
+          return;
+        }
+        if (closeTimeout) {
+          clearTimeout(closeTimeout);
+          closeTimeout = null;
+        }
+        musicAvatarWrapper.classList.toggle('is-active');
+      });
+
+      // Close if clicking anywhere outside
+      document.addEventListener('click', (e) => {
+        if (!musicAvatarWrapper.contains(e.target)) {
+          if (closeTimeout) {
+            clearTimeout(closeTimeout);
+            closeTimeout = null;
+          }
+          musicAvatarWrapper.classList.remove('is-active');
+        }
+      });
+    }
+
+    // Initial track load
+    loadTrack(0, false);
+  }
 });
 
 
