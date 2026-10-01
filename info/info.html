@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth overflow-x-hidden">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ULUPINAR Strategic — Murat Ö. Ulupınar | Commercial Executive & Senior Advisor</title>
+  <meta name="description" content="ULUPINAR Strategic — Guided by Murat Ö. Ulupınar. Connecting ecosystems, bridging markets, and driving cross-border success with over 20 years of leadership.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --bg-primary: #0F172A;
+      --bg-secondary: #1E293B;
+      --accent: #D4AF37;
+      --accent-hover: #E5C358;
+      --accent-border: rgba(212, 175, 55, 0.18);
+      --accent-border-hover: rgba(212, 175, 55, 0.45);
+      --accent-glow: rgba(212, 175, 55, 0.15);
+      --text-primary: #F8FAFC;
+      --text-muted: #94A3B8;
+    }
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      background-image: 
+        radial-gradient(circle at 50% 0%, rgba(212, 175, 55, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 100% 30%, rgba(59, 130, 246, 0.04) 0%, transparent 40%),
+        radial-gradient(circle at 0% 70%, rgba(212, 175, 55, 0.03) 0%, transparent 40%);
+    }
+    .advisory-card {
+      background: rgba(30, 41, 59, 0.75);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--accent-border);
+      transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 200ms cubic-bezier(0.16, 1, 0.3, 1), border-color 200ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .advisory-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--accent-border-hover);
+      box-shadow: 0 16px 32px -12px rgba(0, 0, 0, 0.5), 0 0 24px -4px var(--accent-glow);
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #D4AF37 0%, #C5A059 100%);
+      color: #0F172A;
+      box-shadow: 0 4px 14px 0 rgba(212, 175, 55, 0.3);
+      transition: all 200ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #E5C358 0%, #D4AF37 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px 0 rgba(212, 175, 55, 0.45);
+    }
+    .btn-secondary {
+      background: rgba(30, 41, 59, 0.8);
+      border: 1px solid var(--accent-border);
+      color: var(--text-primary);
+      transition: all 200ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .btn-secondary:hover {
+      border-color: var(--accent-border-hover);
+      color: var(--accent);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px -6px rgba(0, 0, 0, 0.4);
+    }
+    .nav-scrolled {
+      background: rgba(15, 23, 42, 0.94);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(212, 175, 55, 0.15);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+    }
+    .accent-text {
+      color: var(--accent);
+    }
+    .accent-badge {
+      background: rgba(212, 175, 55, 0.1);
+      border: 1px solid rgba(212, 175, 55, 0.25);
+      color: var(--accent);
+    }
+    .timeline-container {
+      border-left: 2px solid rgba(212, 175, 55, 0.3);
+    }
+    .timeline-dot-active {
+      background-color: var(--accent);
+      box-shadow: 0 0 0 4px #0F172A, 0 0 12px var(--accent);
+    }
+    .timeline-dot {
+      background-color: #64748B;
+      box-shadow: 0 0 0 4px #0F172A;
+    }
+    .nav-link {
+      position: relative;
+      transition: color 200ms;
+    }
+    .nav-link:hover {
+      color: var(--accent);
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: -4px;
+      left: 0;
+      background-color: var(--accent);
+      transition: width 200ms;
+    }
+    .nav-link:hover::after {
+      width: 100%;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased overflow-x-hidden">
+  <header id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+      <a href="#hero" class="text-xl font-bold tracking-tight text-white flex items-center gap-2.5 group">
+        <span class="w-2.5 h-2.5 rounded-full bg-amber-400 group-hover:scale-125 transition-transform duration-200"></span>
+        <span>ULUPINAR <span class="font-normal text-amber-400">Strategic</span></span>
+      </a>
+      <nav class="hidden md:flex items-center space-x-8 text-sm font-medium">
+        <a href="#about" class="nav-link text-slate-300">About</a>
+        <a href="#competencies" class="nav-link text-slate-300">Competencies</a>
+        <a href="#services" class="nav-link text-slate-300">Services</a>
+        <a href="#methodology" class="nav-link text-slate-300">Methodology</a>
+        <a href="#track-record" class="nav-link text-slate-300">Track Record</a>
+        <a href="#credentials" class="nav-link text-slate-300">Credentials</a>
+        <a href="#contact" class="nav-link text-slate-300">Contact</a>
+      </nav>
+      <button id="mobile-menu-btn" class="md:hidden p-2 text-slate-300 hover:text-amber-400 focus:outline-none" aria-label="Toggle navigation menu">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+      </button>
+    </div>
+    <div id="mobile-menu" class="hidden md:hidden px-6 py-5 bg-slate-900/95 backdrop-blur-xl border-b border-amber-400/20 flex flex-col space-y-4 text-sm font-medium">
+      <a href="#about" class="mobile-nav-link text-slate-300 hover:text-amber-400 py-1">About</a>
+      <a href="#competencies" class="mobile-nav-link text-slate-300 hover:text-amber-400 py-1">Competencies</a>
+      <a href="#services" class="mobile-nav-link text-slate-300 hover:text-amber-400 py-1">Services</a>
+      <a href="#methodology" class="mobile-nav-link text-slate-300 hover:text-amber-400 py-1">Methodology</a>
+      <a href="#track-record" class="mobile-nav-link text-slate-300 hover:text-amber-400 py-1">Track Record</a>
+      <a href="#credentials" class="mobile-nav-link text-slate-300 hover:text-amber-400 py-1">Credentials</a>
+      <a href="#contact" class="mobile-nav-link text-slate-300 hover:text-amber-400 py-1">Contact</a>
+    </div>
+  </header>
+
+  <main class="flex-grow pt-20">
+    <section id="hero" class="py-24 md:py-32 px-6 max-w-7xl mx-auto flex flex-col items-center text-center">
+      <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-white max-w-4xl leading-tight mb-8">
+        Connecting Ecosystems, Bridging Markets, and Driving Cross-Border Success
+      </h1>
+      <p class="text-lg md:text-xl text-slate-400 max-w-3xl leading-relaxed mb-10">
+        Guiding enterprises through cross-border market expansion, public-private ecosystem collaboration, and high-level strategic execution with over 20 years of hands-on leadership.
+      </p>
+      <div class="flex flex-col sm:flex-row items-center gap-4">
+        <a href="#contact" class="btn-primary inline-flex items-center justify-center px-8 py-4 text-base font-semibold rounded-lg">
+          Let's Connect
+        </a>
+        <a href="#services" class="btn-secondary inline-flex items-center justify-center px-8 py-4 text-base font-semibold rounded-lg">
+          Explore Services
+        </a>
+      </div>
+    </section>
+
+    <section id="about" class="py-24 md:py-28 px-6 max-w-7xl mx-auto border-t border-slate-800/80">
+      <div class="max-w-3xl mb-12">
+        <span class="text-xs font-semibold tracking-widest uppercase accent-text mb-3 block">Value Proposition</span>
+        <h2 class="text-3xl sm:text-4xl font-bold tracking-tight text-white mb-4">Strategic Advisory Built on Real-World Execution</h2>
+        <div class="w-12 h-1 bg-amber-400/60 rounded"></div>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-10 text-slate-300 text-base leading-relaxed">
+        <div class="space-y-5">
+          <h3 class="text-xl font-bold text-white">Partner with ULUPINAR Strategic for Commercial Alignment</h3>
+          <p class="font-medium text-amber-400/90 text-lg leading-snug">
+            From regional connectivity to operational coordination — built for long-term partnerships.
+          </p>
+          <p>
+            At ULUPINAR Strategic, we specialize in aligning diverse corporate interests to foster long-term commercial success. We act as a professional executive bridge between Finland + Europe and Türkiye, providing expert consulting and operational coordination. Our mission is to transform regional complexities into streamlined growth opportunities for international enterprises.
+          </p>
+        </div>
+        <div class="space-y-5">
+          <p>
+            Whether you are exploring new market opportunities, aligning cross-border corporate interests, or managing complex international partnerships, ULUPINAR Strategic supports you with structured processes, transparent communication, and hands-on coordination across every stage of commercial engagement.
+          </p>
+          <p>
+            We work with businesses that value clarity, consistency, and sustainable growth over short-term shortcuts. Our approach combines structured governance, regional intelligence, and hands-on coordination to build reliable strategic roadmaps and long-term partnerships.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="competencies" class="py-24 md:py-28 px-6 max-w-7xl mx-auto border-t border-slate-800/80">
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <span class="text-xs font-semibold tracking-widest uppercase accent-text mb-3 block">Capabilities</span>
+        <h2 class="text-3xl sm:text-4xl font-bold tracking-tight text-white mb-4">Core Competencies & Expertise</h2>
+        <p class="text-slate-400 text-base">Key capabilities driving cross-border growth, ecosystem leadership, and strategic execution.</p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="advisory-card p-7 rounded-xl">
+          <div class="accent-text font-bold text-lg mb-3 font-mono">01</div>
+          <h3 class="text-lg font-bold text-white mb-2">Cross-Border Market Expansion & Trade Strategy</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">Designing and executing international market entry, distribution networks, and bilateral trade initiatives.</p>
+        </div>
+        <div class="advisory-card p-7 rounded-xl">
+          <div class="accent-text font-bold text-lg mb-3 font-mono">02</div>
+          <h3 class="text-lg font-bold text-white mb-2">Startup & Scale-up Ecosystem Engagement</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">Fostering collaboration between emerging ventures, regional innovation hubs, and enterprise commercial channels.</p>
+        </div>
+        <div class="advisory-card p-7 rounded-xl">
+          <div class="accent-text font-bold text-lg mb-3 font-mono">03</div>
+          <h3 class="text-lg font-bold text-white mb-2">Public-Private Partnerships & Innovation Hub Collaboration</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">Aligning governmental stakeholders, research universities, and private entities for institutional growth.</p>
+        </div>
+        <div class="advisory-card p-7 rounded-xl">
+          <div class="accent-text font-bold text-lg mb-3 font-mono">04</div>
+          <h3 class="text-lg font-bold text-white mb-2">Stakeholder Management & High-Level Negotiations</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">Navigating complex multi-cultural negotiations, contract structures, and executive alignment.</p>
+        </div>
+        <div class="advisory-card p-7 rounded-xl">
+          <div class="accent-text font-bold text-lg mb-3 font-mono">05</div>
+          <h3 class="text-lg font-bold text-white mb-2">Talent Mobility & International Talent Attraction</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">Supporting global talent attraction initiatives and community building between Nordic hubs and global markets.</p>
+        </div>
+        <div class="advisory-card p-7 rounded-xl">
+          <div class="accent-text font-bold text-lg mb-3 font-mono">06</div>
+          <h3 class="text-lg font-bold text-white mb-2">Strategic Partnerships & Commercial Execution</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">Turning high-level corporate agreements into operational joint ventures, supply channels, and long-term alliances.</p>
+        </div>
+        <div class="advisory-card p-7 rounded-xl">
+          <div class="accent-text font-bold text-lg mb-3 font-mono">07</div>
+          <h3 class="text-lg font-bold text-white mb-2">Corporate Communications & Brand Positioning</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">Crafting authoritative positioning and multi-channel executive communications across diverse markets.</p>
+        </div>
+        <div class="advisory-card p-7 rounded-xl">
+          <div class="accent-text font-bold text-lg mb-3 font-mono">08</div>
+          <h3 class="text-lg font-bold text-white mb-2">Project Governance & Multi-Channel Management</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">Overseeing operational execution, milestone tracking, resource allocation, and quality governance.</p>
+        </div>
+        <div class="advisory-card p-7 rounded-xl">
+          <div class="accent-text font-bold text-lg mb-3 font-mono">09</div>
+          <h3 class="text-lg font-bold text-white mb-2">Digital Transformation & Sustainable Business Models</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">Integrating modern software methodologies, circular economic frameworks, and digital architecture into commercial models.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="services" class="py-24 md:py-28 px-6 max-w-7xl mx-auto border-t border-slate-800/80">
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <span class="text-xs font-semibold tracking-widest uppercase accent-text mb-3 block">Solutions</span>
+        <h2 class="text-3xl sm:text-4xl font-bold tracking-tight text-white mb-4">Specialized Advisory Services & Solutions</h2>
+        <p class="text-slate-400 text-base">Tailored advisory frameworks designed to facilitate cross-border expansion, partnership stability, and operational efficiency.</p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div class="advisory-card p-8 rounded-xl flex flex-col justify-between">
+          <div>
+            <div class="w-8 h-8 rounded-lg bg-amber-400/10 border border-amber-400/20 flex items-center justify-center text-amber-400 font-bold mb-5">
+              01
+            </div>
+            <h3 class="text-2xl font-bold text-white mb-3">Specialized Strategic Expertise</h3>
+            <p class="text-slate-300 text-sm leading-relaxed mb-6">
+              With decades of combined experience across international trade, commercial alignment, and operational coordination at the highest levels, our hands-on experience helps enterprises navigate the complexities of the Finnish, European, and Turkish business landscapes with absolute confidence.
+            </p>
+          </div>
+          <div>
+            <div class="text-xs font-semibold uppercase tracking-wider accent-text mb-3">Key Offerings</div>
+            <div class="flex flex-wrap gap-2">
+              <span class="px-3 py-1 text-xs rounded-md bg-slate-900/90 text-slate-300 border border-slate-700/80">Market & Category Assessment</span>
+              <span class="px-3 py-1 text-xs rounded-md bg-slate-900/90 text-slate-300 border border-slate-700/80">Partnership Strategy</span>
+              <span class="px-3 py-1 text-xs rounded-md bg-slate-900/90 text-slate-300 border border-slate-700/80">Commercial Positioning</span>
+              <span class="px-3 py-1 text-xs rounded-md bg-slate-900/90 text-slate-300 border border-slate-700/80">Long-term Expansion Planning</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="advisory-card p-8 rounded-xl flex flex-col justify-between">
+          <div>
+            <div class="w-8 h-8 rounded-lg bg-amber-400/10 border border-amber-400/20 flex items-center justify-center text-amber-400 font-bold mb-5">
+              02
+            </div>
+            <h3 class="text-2xl font-bold text-white mb-3">Market-Driven Strategic Insights</h3>
+            <p class="text-slate-300 text-sm leading-relaxed mb-6">
+              Our advisory is shaped by real-time market dynamics—regulatory frameworks, economic benchmarks, and regional business climates. We ensure your expansion and partnership decisions are informed by on-the-ground intelligence rather than assumptions.
+            </p>
+          </div>
+          <div>
+            <div class="text-xs font-semibold uppercase tracking-wider accent-text mb-3">Key Offerings</div>
+            <div class="flex flex-wrap gap-2">
+              <span class="px-3 py-1 text-xs rounded-md bg-slate-900/90 text-slate-300 border border-slate-700/80">Regional Business Intelligence</span>
+              <span class="px-3 py-1 text-xs rounded-md bg-slate-900/90 text-slate-300 border border-slate-700/80">Economic Benchmarking</span>
+              <span class="px-3 py-1 text-xs rounded-md bg-slate-900/90 text-slate-300 border border-slate-700/80">Risk & Feasibility Evaluation</span>
+              <span class="px-3 py-1 text-xs rounded-md bg-slate-900/90 text-slate-300 border border-slate-700/80">Alternative Strategic Options</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="advisory-card p-8 rounded-xl flex flex-col justify-between">
+          <div>
+            <div class="w-8 h-8 rounded-lg bg-amber-400/10 border border-amber-400/20 flex items-center justify-center text-amber-400 font-bold mb-5">
+              03
+            </div>
+            <h3 class="text-2xl font-bold text-white mb-3">Tailored Partnership Solutions</h3>
+            <p class="text-slate-300 text-sm leading-relaxed mb-6">
+              Every enterprise and every market has a unique DNA. We adapt our coordination processes and support structures to your specific business model—whether establishing an initial commercial presence or scaling ongoing cross-border operations.
+            </p>
+          </div>
+          <div>
+            <div class="text-xs font-semibold uppercase tracking-wider accent-text mb-3">Key Offerings</div>
+            <div class="flex flex-wrap gap-2">
+              <span class="px-3 py-1 text-xs rounded-md bg-slate-900/90 text-slate-300 border border-slate-700/80">Strategic Term Alignment</span>
+              <span class="px-3 py-1 text-xs rounded-md bg-slate-900/90 text-slate-300 border border-slate-700/80">Commercial Governance</span>
+              <span class="px-3 py-1 text-xs rounded-md bg-slate-900/90 text-slate-300 border border-slate-700/80">Operational Synergy Optimization</span>
+              <span class="px-3 py-1 text-xs rounded-md bg-slate-900/90 text-slate-300 border border-slate-700/80">Continuity & Growth Analysis</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="advisory-card p-8 rounded-xl flex flex-col justify-between">
+          <div>
+            <div class="w-8 h-8 rounded-lg bg-amber-400/10 border border-amber-400/20 flex items-center justify-center text-amber-400 font-bold mb-5">
+              04
+            </div>
+            <h3 class="text-2xl font-bold text-white mb-3">Trade & Logistics Coordination Guidance</h3>
+            <p class="text-slate-300 text-sm leading-relaxed mb-6">
+              We provide guidance and coordination for transportation and delivery processes to ensure smooth handover from origin to destination across international frontiers.
+            </p>
+          </div>
+          <div>
+            <div class="text-xs font-semibold uppercase tracking-wider accent-text mb-3">Key Offerings</div>
+            <div class="flex flex-wrap gap-2">
+              <span class="px-3 py-1 text-xs rounded-md bg-slate-900/90 text-slate-300 border border-slate-700/80">Shipment planning support</span>
+              <span class="px-3 py-1 text-xs rounded-md bg-slate-900/90 text-slate-300 border border-slate-700/80">Transport & handover coordination</span>
+              <span class="px-3 py-1 text-xs rounded-md bg-slate-900/90 text-slate-300 border border-slate-700/80">Delivery timeline visibility</span>
+              <span class="px-3 py-1 text-xs rounded-md bg-slate-900/90 text-slate-300 border border-slate-700/80">Destination-oriented logistics guidance</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="methodology" class="py-24 md:py-28 px-6 max-w-7xl mx-auto border-t border-slate-800/80">
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <span class="text-xs font-semibold tracking-widest uppercase accent-text mb-3 block">Process</span>
+        <h2 class="text-3xl sm:text-4xl font-bold tracking-tight text-white mb-4">Advisory Methodology</h2>
+        <p class="text-slate-400 text-base">A disciplined, milestone-driven framework engineered for cross-border alignment and sustained execution.</p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="advisory-card p-7 rounded-xl flex flex-col justify-between">
+          <div>
+            <div class="text-4xl font-extrabold accent-text mb-4 font-mono">01</div>
+            <h3 class="text-xl font-bold text-white mb-3">Initial Consultation</h3>
+            <p class="text-sm text-slate-400 leading-relaxed">
+              We start by understanding your strategic goals, target markets, and operational priorities. This ensures a clear and realistic foundation for your cross-border expansion from day one.
+            </p>
+          </div>
+        </div>
+        <div class="advisory-card p-7 rounded-xl flex flex-col justify-between">
+          <div>
+            <div class="text-4xl font-extrabold accent-text mb-4 font-mono">02</div>
+            <h3 class="text-xl font-bold text-white mb-3">Research & Analysis</h3>
+            <p class="text-sm text-slate-400 leading-relaxed">
+              We analyze regional business landscapes, regulatory frameworks, and economic benchmarks. We evaluate the feasibility of strategic alliances based on actual market conditions.
+            </p>
+          </div>
+        </div>
+        <div class="advisory-card p-7 rounded-xl flex flex-col justify-between">
+          <div>
+            <div class="text-4xl font-extrabold accent-text mb-4 font-mono">03</div>
+            <h3 class="text-xl font-bold text-white mb-3">Coordination & Alignment</h3>
+            <p class="text-sm text-slate-400 leading-relaxed">
+              We facilitate high-level communication between international entities, align diverse commercial terms, and support negotiations to structure partnerships that balance growth, stability, and continuity.
+            </p>
+          </div>
+        </div>
+        <div class="advisory-card p-7 rounded-xl flex flex-col justify-between">
+          <div>
+            <div class="text-4xl font-extrabold accent-text mb-4 font-mono">04</div>
+            <h3 class="text-xl font-bold text-white mb-3">Execution & Follow-Up</h3>
+            <p class="text-sm text-slate-400 leading-relaxed">
+              We follow up on strategic implementation, milestone readiness, and operational timelines—providing visibility and control until the commercial alignment process is successfully integrated.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="track-record" class="py-24 md:py-28 px-6 max-w-7xl mx-auto border-t border-slate-800/80">
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <span class="text-xs font-semibold tracking-widest uppercase accent-text mb-3 block">Experience</span>
+        <h2 class="text-3xl sm:text-4xl font-bold tracking-tight text-white mb-4">Proven Professional Track Record</h2>
+        <p class="text-slate-400 text-base">Over 20 years of executive leadership across European, Nordic, and international commercial corridors.</p>
+      </div>
+      <div class="max-w-4xl mx-auto space-y-12 timeline-container pl-6 sm:pl-8 ml-4 sm:mx-auto">
+        <div class="relative">
+          <div class="absolute -left-[33px] sm:-left-[41px] top-1.5 w-4 h-4 rounded-full timeline-dot-active"></div>
+          <div class="inline-block px-3 py-1 rounded accent-badge text-xs font-bold tracking-wider uppercase mb-2">2025 – Present</div>
+          <h3 class="text-2xl font-bold text-white">Founder & Managing Director / Senior Advisor</h3>
+          <div class="accent-text text-sm font-medium mb-4">ULUPINAR Strategic | Tampere & Helsinki, Finland</div>
+          <p class="text-slate-300 text-sm leading-relaxed">
+            Spearheaded international business development, strategic partnerships, and cross-border operations across European and global markets. Actively engaged with startup and scale-up ecosystems, fostering collaboration across regional innovation hubs and enterprise channels. Managed large-scale commercial relationships, establishing robust distribution and strategic networks, and aligned corporate strategy with modern digital architecture and sustainable business models.
+          </p>
+        </div>
+
+        <div class="relative">
+          <div class="absolute -left-[33px] sm:-left-[41px] top-1.5 w-4 h-4 rounded-full timeline-dot"></div>
+          <div class="inline-block px-3 py-1 rounded bg-slate-800 border border-slate-700 text-slate-300 text-xs font-bold tracking-wider uppercase mb-2">2018 – 2025</div>
+          <h3 class="text-2xl font-bold text-white">Commercial & Industrial International Trade Manager</h3>
+          <div class="text-slate-400 text-sm font-medium mb-4">Şekeroğlu & Polipa Enterprises | Turkey</div>
+          <p class="text-slate-300 text-sm leading-relaxed">
+            Managed core commercial operations, supply chain dynamics, and industrial production workflows. Coordinated domestic and international distribution channels, strengthening market positioning and stakeholder relations. Ensured seamless operational execution and alignment with corporate growth targets across industrial sectors.
+          </p>
+        </div>
+
+        <div class="relative">
+          <div class="absolute -left-[33px] sm:-left-[41px] top-1.5 w-4 h-4 rounded-full timeline-dot"></div>
+          <div class="inline-block px-3 py-1 rounded bg-slate-800 border border-slate-700 text-slate-300 text-xs font-bold tracking-wider uppercase mb-2">2012 – 2018</div>
+          <h3 class="text-2xl font-bold text-white">Corporate Executive & International Trade Director / Export & Brand Manager</h3>
+          <div class="text-slate-400 text-sm font-medium mb-4">Ege Sahil Dağıtım Ltd. Şti. & Rositell / IDS Doors | Turkey & Russia</div>
+          <p class="text-slate-300 text-sm leading-relaxed">
+            Directed overall financial performance, administrative functions, and international sales strategies. Served as the primary communications coordinator for institutional partnerships, managed multi-channel commercial operations, and strategically planned, executed, and governed complex industrial, commercial, and residential projects across international markets.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="credentials" class="py-24 md:py-28 px-6 max-w-7xl mx-auto border-t border-slate-800/80">
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <span class="text-xs font-semibold tracking-widest uppercase accent-text mb-3 block">Background</span>
+        <h2 class="text-3xl sm:text-4xl font-bold tracking-tight text-white mb-4">Credentials & Background</h2>
+        <p class="text-slate-400 text-base">Academic foundations, executive certifications, and linguistic proficiencies.</p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="advisory-card p-8 rounded-xl flex flex-col justify-between">
+          <div>
+            <h3 class="text-xl font-bold text-white mb-6 flex items-center gap-2.5">
+              <span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
+              Education & Certifications
+            </h3>
+            <ul class="space-y-4 text-sm text-slate-300">
+              <li class="border-b border-slate-700/50 pb-3">
+                <div class="font-semibold text-white">Software Engineering (Degree Studies)</div>
+                <div class="text-xs text-slate-400 mt-1">Tampere University of Applied Sciences (TAMK) | Finland (2025–Present)</div>
+              </li>
+              <li class="border-b border-slate-700/50 pb-3">
+                <div class="font-semibold text-white">Marketing Management Certificate</div>
+                <div class="text-xs text-slate-400 mt-1">University of California, Riverside (UCR) | USA (2007–2008)</div>
+              </li>
+              <li class="border-b border-slate-700/50 pb-3">
+                <div class="font-semibold text-white">Bachelor's in Public Relations & Advertising</div>
+                <div class="text-xs text-slate-400 mt-1">Gazi University | Ankara, Turkey (2002–2007)</div>
+              </li>
+              <li>
+                <div class="font-semibold text-white">Lean Six Sigma - Green Belt</div>
+                <div class="text-xs text-slate-400 mt-1">UC Riverside, USA</div>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="advisory-card p-8 rounded-xl flex flex-col justify-between">
+          <div>
+            <h3 class="text-xl font-bold text-white mb-6 flex items-center gap-2.5">
+              <span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
+              Languages
+            </h3>
+            <ul class="space-y-4 text-sm text-slate-300">
+              <li class="flex items-center justify-between border-b border-slate-700/50 pb-3">
+                <span class="font-semibold text-white">Turkish</span>
+                <span class="text-xs px-2.5 py-1 rounded accent-badge font-semibold">Native</span>
+              </li>
+              <li class="flex items-center justify-between border-b border-slate-700/50 pb-3">
+                <span class="font-semibold text-white">English</span>
+                <span class="text-xs px-2.5 py-1 rounded accent-badge font-semibold">Fluent</span>
+              </li>
+              <li class="flex items-center justify-between border-b border-slate-700/50 pb-3">
+                <span class="font-semibold text-white">Finnish</span>
+                <span class="text-xs px-2.5 py-1 rounded bg-slate-900/90 text-slate-400 border border-slate-700">Basic</span>
+              </li>
+              <li class="flex items-center justify-between">
+                <span class="font-semibold text-white">Russian</span>
+                <span class="text-xs px-2.5 py-1 rounded bg-slate-900/90 text-slate-400 border border-slate-700">Basic</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="advisory-card p-8 rounded-xl flex flex-col justify-between">
+          <div>
+            <h3 class="text-xl font-bold text-white mb-6 flex items-center gap-2.5">
+              <span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
+              Consulting Expertise
+            </h3>
+            <ul class="space-y-3.5 text-sm text-slate-300">
+              <li class="flex items-start gap-2.5">
+                <span class="accent-text text-base leading-none mt-1">✦</span>
+                <span>Cross-Border Market Expansion & Market Entry</span>
+              </li>
+              <li class="flex items-start gap-2.5">
+                <span class="accent-text text-base leading-none mt-1">✦</span>
+                <span>Public-Private Innovation Ecosystems</span>
+              </li>
+              <li class="flex items-start gap-2.5">
+                <span class="accent-text text-base leading-none mt-1">✦</span>
+                <span>Strategic Commercial Governance & Deals</span>
+              </li>
+              <li class="flex items-start gap-2.5">
+                <span class="accent-text text-base leading-none mt-1">✦</span>
+                <span>Supply Chain, Trade & Logistics Guidance</span>
+              </li>
+              <li class="flex items-start gap-2.5">
+                <span class="accent-text text-base leading-none mt-1">✦</span>
+                <span>International Talent Mobility & Attraction</span>
+              </li>
+              <li class="flex items-start gap-2.5">
+                <span class="accent-text text-base leading-none mt-1">✦</span>
+                <span>Digital Transformation & Brand Strategy</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="py-24 md:py-28 px-6 max-w-7xl mx-auto border-t border-slate-800/80">
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <span class="text-xs font-semibold tracking-widest uppercase accent-text mb-3 block">Connect</span>
+        <h2 class="text-3xl sm:text-4xl font-bold tracking-tight text-white mb-4">Let's Build Strategic Success Together</h2>
+        <p class="text-slate-300 leading-relaxed text-base">
+          Ready to expand your reach between Finland, Europe, and Turkey? ULUPINAR Strategic provides expert advisory and coordination services to align your corporate interests with consistent and sustainable growth across borders. Let’s discuss how we can bridge the gap for your business.
+        </p>
+      </div>
+
+      <div class="max-w-xl mx-auto mb-12">
+        <div class="advisory-card p-8 rounded-xl text-center sm:text-left">
+          <h3 class="text-2xl font-bold text-white mb-4">ULUPINAR Strategic — European Office</h3>
+          <div class="text-sm text-slate-300 space-y-2">
+            <p class="font-medium text-white">Sarvijaakonkatu 18 A 25, 33540</p>
+            <p>Tampere, FINLAND</p>
+            <p class="pt-3 flex items-center justify-center sm:justify-start gap-2">
+              <span class="text-slate-400">Phone:</span>
+              <a href="tel:+358449505480" class="text-white hover:text-amber-400 transition-colors font-semibold">+358 44 950 5480</a>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4 max-w-2xl mx-auto">
+        <a href="mailto:murat.ulupinar@murat.ulupinar.com" class="btn-secondary w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-lg text-sm font-semibold">
+          <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+          </svg>
+          murat.ulupinar@murat.ulupinar.com
+        </a>
+        <a href="https://www.linkedin.com" target="_blank" rel="noopener noreferrer" class="btn-primary w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-lg text-sm font-semibold">
+          <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+            <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+          </svg>
+          LinkedIn Profile
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="border-t border-slate-800/80 bg-slate-950 py-12 px-6">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 text-sm text-slate-500">
+      <div class="flex flex-col sm:flex-row items-center gap-3 text-center sm:text-left">
+        <span class="font-bold text-white text-base">ULUPINAR Strategic</span>
+        <span class="hidden sm:inline text-slate-600">|</span>
+        <span>Murat Ö. Ulupınar — Commercial Executive & Senior Advisor</span>
+      </div>
+      <div class="text-xs text-center md:text-right text-slate-500">
+        © 2026 ULUPINAR Strategic. All rights reserved. Strategic Advisory & Cross-Border Execution.
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        navbar.classList.add('nav-scrolled');
+      } else {
+        navbar.classList.remove('nav-scrolled');
+      }
+    });
+
+    const menuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    if (menuBtn && mobileMenu) {
+      menuBtn.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+      });
+      document.querySelectorAll('.mobile-nav-link').forEach(link => {
+        link.addEventListener('click', () => {
+          mobileMenu.classList.add('hidden');
+        });
+      });
+    }
+  </script>
+</body>
+</html>

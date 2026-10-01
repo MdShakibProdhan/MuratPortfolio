@@ -105,24 +105,105 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // 3. Product Carousel Scroll Arrows
+  // 3. Product Carousel Scroll Arrows & Auto Slide
   const carousel = document.querySelector('.carousel-container');
   const btnPrev = document.getElementById('btn-prev');
   const btnNext = document.getElementById('btn-next');
 
-  if (carousel && btnPrev && btnNext) {
+  if (carousel) {
     const getScrollAmount = () => {
       const card = carousel.querySelector('.service-card');
       return card ? card.offsetWidth + 24 : 320;
     };
-    
-    btnPrev.addEventListener('click', () => {
-      carousel.scrollBy({ left: -getScrollAmount(), behavior: 'smooth' });
+
+    const slideNext = () => {
+      const maxScroll = carousel.scrollWidth - carousel.clientWidth;
+      if (carousel.scrollLeft >= maxScroll - 15) {
+        carousel.scrollTo({ left: 0, behavior: 'smooth' });
+      } else {
+        carousel.scrollBy({ left: getScrollAmount(), behavior: 'smooth' });
+      }
+    };
+
+    const slidePrev = () => {
+      if (carousel.scrollLeft <= 15) {
+        const maxScroll = carousel.scrollWidth - carousel.clientWidth;
+        carousel.scrollTo({ left: maxScroll, behavior: 'smooth' });
+      } else {
+        carousel.scrollBy({ left: -getScrollAmount(), behavior: 'smooth' });
+      }
+    };
+
+    if (btnPrev) {
+      btnPrev.addEventListener('click', () => {
+        slidePrev();
+        resetAutoSlide();
+      });
+    }
+
+    if (btnNext) {
+      btnNext.addEventListener('click', () => {
+        slideNext();
+        resetAutoSlide();
+      });
+    }
+
+    // Auto Slide Controller
+    let autoSlideInterval = null;
+    const AUTO_SLIDE_DELAY = 3500; // 3.5 seconds per slide
+
+    const startAutoSlide = () => {
+      if (autoSlideInterval) clearInterval(autoSlideInterval);
+      autoSlideInterval = setInterval(() => {
+        slideNext();
+      }, AUTO_SLIDE_DELAY);
+    };
+
+    const stopAutoSlide = () => {
+      if (autoSlideInterval) {
+        clearInterval(autoSlideInterval);
+        autoSlideInterval = null;
+      }
+    };
+
+    const resetAutoSlide = () => {
+      stopAutoSlide();
+      startAutoSlide();
+    };
+
+    // Pause on Hover & Focus
+    carousel.addEventListener('mouseenter', stopAutoSlide);
+    carousel.addEventListener('mouseleave', startAutoSlide);
+    carousel.addEventListener('focusin', stopAutoSlide);
+    carousel.addEventListener('focusout', startAutoSlide);
+
+    // Pause on Touch interactions (Mobile & Tablets)
+    carousel.addEventListener('touchstart', stopAutoSlide, { passive: true });
+    carousel.addEventListener('touchend', () => {
+      setTimeout(startAutoSlide, 1500);
+    }, { passive: true });
+
+    // Page Visibility API pause
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        stopAutoSlide();
+      } else {
+        startAutoSlide();
+      }
     });
-    
-    btnNext.addEventListener('click', () => {
-      carousel.scrollBy({ left: getScrollAmount(), behavior: 'smooth' });
-    });
+
+    // Pause when out of viewport to save performance
+    const carouselObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          startAutoSlide();
+        } else {
+          stopAutoSlide();
+        }
+      });
+    }, { threshold: 0.15 });
+
+    carouselObserver.observe(carousel);
   }
 
   // 4. Intersection Observer for fade-in elements
@@ -144,6 +225,51 @@ document.addEventListener('DOMContentLoaded', () => {
   faders.forEach(fader => {
     appearOnScroll.observe(fader);
   });
+
+  // 4b. Stats Counter Animation (VengeanceUI StatsCounter with Spring physics)
+  const statsCounters = document.querySelectorAll('.stats-counter');
+  if (statsCounters.length > 0) {
+    const animateCounter = (el) => {
+      const target = parseFloat(el.getAttribute('data-target') || '20');
+      const suffix = el.getAttribute('data-suffix') || '';
+      const prefix = el.getAttribute('data-prefix') || '';
+      const decimals = parseInt(el.getAttribute('data-decimals') || '0', 10);
+      const duration = (parseFloat(el.getAttribute('data-duration') || '1.5')) * 1000;
+      
+      let startTime = null;
+
+      // Spring-like smooth ease-out curve (framer-motion spring with bounce: 0)
+      const easeOutQuart = (t) => 1 - Math.pow(1 - t, 4);
+
+      const updateCounter = (currentTime) => {
+        if (!startTime) startTime = currentTime;
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const currentVal = easeOutQuart(progress) * target;
+
+        el.textContent = `${prefix}${currentVal.toFixed(decimals)}${suffix}`;
+
+        if (progress < 1) {
+          requestAnimationFrame(updateCounter);
+        } else {
+          el.textContent = `${prefix}${target.toFixed(decimals)}${suffix}`;
+        }
+      };
+
+      requestAnimationFrame(updateCounter);
+    };
+
+    const counterObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          animateCounter(entry.target);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.2, rootMargin: "-20px" });
+
+    statsCounters.forEach(counter => counterObserver.observe(counter));
+  }
 
   // 5. Scroll to Top Button Visibility & Click Handler
   const scrollToTopBtn = document.getElementById('scrollToTop');
@@ -614,6 +740,156 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initial track load
     loadTrack(0, false);
+  }
+
+  // 10. Expandable Bento Grid Handler (Track Record Section)
+  const bentoCards = document.querySelectorAll('.bento-card[data-bento-id]');
+  const bentoOverlay = document.getElementById('bentoModalOverlay');
+  const bentoContent = document.getElementById('bentoModalContent');
+  const bentoCloseBtn = document.getElementById('bentoModalClose');
+
+  const bentoDetailsData = {
+    'track-2025': {
+      period: '2025 – Present',
+      role: 'Founder & Managing Director / Senior Advisor',
+      company: 'ULUPINAR Strategic',
+      location: 'Tampere & Helsinki, Finland',
+      badgeClass: 'bento-badge-active',
+      overview: 'Spearheaded international business development, strategic partnerships, and cross-border commercial operations connecting Finnish, Nordic, European, and Turkish markets. Actively engaged with startup and scale-up ecosystems, fostering collaboration across regional innovation hubs, universities, and enterprise channels.',
+      pillarsTitle: 'Key Leadership Pillars & Strategic Scope',
+      pillars: [
+        'Bilateral Finnish–Turkish Commercial & Strategic Advisory',
+        'Startup & Scale-Up Innovation Ecosystem Orchestration',
+        'Large-Scale Enterprise Distribution & Supplier Networks',
+        'Alignment with Modern Digital Architecture & ESG Standards'
+      ],
+      tags: ['Cross-Border Advisory', 'Startup Ecosystems', 'Nordic–EU Hubs', 'Digital Architecture']
+    },
+    'track-2018': {
+      period: '2018 – 2025',
+      role: 'Commercial & Industrial International Trade Manager',
+      company: 'Şekeroğlu & Polipa Enterprises',
+      location: 'Turkey & International Corridors',
+      badgeClass: '',
+      overview: 'Governed core commercial operations, supply chain logistics, and industrial manufacturing workflows across multi-market corridors. Coordinated domestic and international distribution networks, strengthening regional market positioning and key stakeholder relations.',
+      pillarsTitle: 'Core Responsibilities & Milestones',
+      pillars: [
+        'International Supply Chain & Manufacturing Logistics',
+        'B2B Distribution Channel Expansion across EU and Middle East',
+        'Key Account Management and Commercial Contract Alignment',
+        'Operational Execution with Sustainable Margin Optimization'
+      ],
+      tags: ['Supply Chain Dynamics', 'Industrial Export', 'Operational Execution', 'Contract Governance']
+    },
+    'track-2012': {
+      period: '2012 – 2018',
+      role: 'Corporate Executive & International Trade Director',
+      company: 'Ege Sahil Dağıtım Ltd. Şti. & Rositell / IDS Doors',
+      location: 'Turkey & Russia',
+      badgeClass: '',
+      overview: 'Directed overall financial performance, administrative leadership, and international commercial sales strategies across EMEA and CIS corridors. Served as the primary communications coordinator for institutional partnerships, managing multi-channel commercial operations.',
+      pillarsTitle: 'Strategic Directorship & Governance',
+      pillars: [
+        'Executive Financial Governance, Budgeting & P&L Oversight',
+        'Multi-Territory Export Strategy & Brand Management',
+        'Institutional Partnerships & High-Level Negotiation Coordination',
+        'Complex Industrial, Commercial & Residential Project Governance'
+      ],
+      tags: ['Executive Governance', 'P&L Management', 'Cross-Border Trade', 'Project Leadership']
+    },
+    'track-summary': {
+      period: '20+ Years Trajectory',
+      role: '20+ Years Cross-Border Commercial Governance',
+      company: 'Murat Ö. Ulupınar — Senior Advisor',
+      location: 'Finland • Europe • Türkiye Corridor',
+      badgeClass: 'bento-badge-highlight',
+      overview: 'Combining structured executive governance, regional intelligence, and hands-on operational leadership to build reliable strategic roadmaps and lasting international partnerships across Northern Europe, the Mediterranean, and global trading hubs.',
+      pillarsTitle: 'Core Value Proposition & Executive Focus',
+      pillars: [
+        'Bridging Cross-Border Complexity into Actionable Growth Models',
+        'Decades of Bilateral Trade & Public-Private Innovation Experience',
+        'Transparent Communication & High-Governance Operational Control',
+        'Sustainable Roadmaps Built on Trust and Long-Term Partnership'
+      ],
+      tags: ['Nordic–Turkish Bridge', 'Bilateral Growth', 'Institutional Trust', '20+ Years Track Record']
+    }
+  };
+
+  function openBentoModal(id) {
+    const data = bentoDetailsData[id];
+    if (!data || !bentoOverlay || !bentoContent) return;
+
+    bentoContent.innerHTML = `
+      <div class="bento-modal-header">
+        <div class="d-flex align-items-center gap-2 mb-2">
+          <span class="bento-badge ${data.badgeClass}">${data.period}</span>
+          <span class="text-muted small">${data.location}</span>
+        </div>
+        <h3 class="fs-4 fw-bold text-dark mb-1">${data.role}</h3>
+        <div class="text-accent fw-semibold small">${data.company}</div>
+      </div>
+      <div class="bento-modal-body">
+        <p>${data.overview}</p>
+        <div class="bento-modal-pillars">
+          <h4>${data.pillarsTitle}</h4>
+          <ul>
+            ${data.pillars.map(item => `<li>${item}</li>`).join('')}
+          </ul>
+        </div>
+        <div class="bento-tags mb-4">
+          ${data.tags.map(tag => `<span class="bento-tag">${tag}</span>`).join('')}
+        </div>
+        <div class="bento-modal-actions">
+          <a href="#contact" class="btn btn-primary-custom" onclick="closeBentoModal()">Connect with Murat <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="ms-1"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+          <button type="button" class="btn btn-outline-secondary" onclick="closeBentoModal()">Close</button>
+        </div>
+      </div>
+    `;
+
+    bentoOverlay.classList.add('is-open');
+    bentoOverlay.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeBentoModal() {
+    if (!bentoOverlay) return;
+    bentoOverlay.classList.remove('is-open');
+    bentoOverlay.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+
+  window.closeBentoModal = closeBentoModal;
+
+  if (bentoCards && bentoOverlay) {
+    bentoCards.forEach(card => {
+      card.addEventListener('click', () => {
+        const id = card.getAttribute('data-bento-id');
+        openBentoModal(id);
+      });
+      card.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          const id = card.getAttribute('data-bento-id');
+          openBentoModal(id);
+        }
+      });
+    });
+
+    if (bentoCloseBtn) {
+      bentoCloseBtn.addEventListener('click', closeBentoModal);
+    }
+
+    bentoOverlay.addEventListener('click', (e) => {
+      if (e.target === bentoOverlay) {
+        closeBentoModal();
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && bentoOverlay.classList.contains('is-open')) {
+        closeBentoModal();
+      }
+    });
   }
 });
 
