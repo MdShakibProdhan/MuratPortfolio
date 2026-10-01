@@ -1202,7 +1202,9 @@
         ptr.downY = cy;
         ptr.moved = 0;
         ptr.t0 = performance.now();
-        canvasEl.setPointerCapture(e.pointerId);
+        if (e.pointerType === 'mouse') {
+          try { canvasEl.setPointerCapture(e.pointerId); } catch (_) {}
+        }
       } else if (state.mode === 'detail' && rayBook === state.selected) {
         ptr.down = true;
         orbit.drag = true;
@@ -1210,7 +1212,9 @@
         orbit.dyAcc = 0;
         ptr.moved = 0;
         ptr.t0 = performance.now();
-        canvasEl.setPointerCapture(e.pointerId);
+        if (e.pointerType === 'mouse') {
+          try { canvasEl.setPointerCapture(e.pointerId); } catch (_) {}
+        }
       } else {
         state.pillLock = null;
         state.kbIndex = -1;
