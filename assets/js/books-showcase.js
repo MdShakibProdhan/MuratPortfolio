@@ -555,7 +555,7 @@
     const spineGeo = new THREE.BoxGeometry(0.028, H + OV * 2, T + CT * 2 + 0.006);
     const hitGeo = new THREE.BoxGeometry(1.8, 2.5, 1.15);
     const blobGeo = new THREE.PlaneGeometry(1, 1);
-    const hitMat = new THREE.MeshBasicMaterial({ visible: false });
+    const hitMat = new THREE.MeshBasicMaterial({ transparent: true, opacity: 0, depthWrite: false });
 
     function std(o) {
       return new THREE.MeshStandardMaterial(Object.assign({ metalness: 0.02 }, o));
@@ -1107,6 +1107,17 @@
     }
 
     if (closeBtn) closeBtn.addEventListener('click', close);
+    if (openBtn) {
+      openBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (state.hovered) {
+          open(state.hovered);
+        } else if (currentWindow && currentWindow.length) {
+          open(bookInstances[currentWindow[0]]);
+        }
+      });
+    }
 
     const ptr = {
       ndcX: 0,
@@ -1156,6 +1167,58 @@
         rayBook = null;
       }
     }
+
+    // Direct click handler for desktop/touch
+    canvasEl.addEventListener('click', (e) => {
+      if (state.mode !== 'hero') return;
+      const { x: cx, y: cy } = localXY(e);
+      const ndcX = (cx / dims.w) * 2 - 1;
+      const ndcY = -(cy / dims.h) * 2 + 1;
+      ray.setFromCamera({ x: ndcX, y: ndcY }, camera);
+      const hits = ray.intersectObjects(hitMeshes, false);
+      if (hits.length) {
+        const targetBook = bookByHit(hits[0].object);
+        if (targetBook) {
+          open(targetBook);
+        }
+      }
+    });
+
+    // Touch tap handler for mobile devices
+    let touchTap = { x: 0, y: 0, time: 0, moved: false };
+    canvasEl.addEventListener('touchstart', (e) => {
+      if (e.touches && e.touches.length === 1) {
+        const t = e.touches[0];
+        const { x, y } = localXY(t);
+        touchTap = { x, y, time: performance.now(), moved: false };
+      }
+    }, { passive: true });
+
+    canvasEl.addEventListener('touchmove', (e) => {
+      if (e.touches && e.touches.length === 1) {
+        const t = e.touches[0];
+        const { x, y } = localXY(t);
+        if (Math.hypot(x - touchTap.x, y - touchTap.y) > 15) {
+          touchTap.moved = true;
+        }
+      }
+    }, { passive: true });
+
+    canvasEl.addEventListener('touchend', (e) => {
+      if (state.mode !== 'hero' || touchTap.moved) return;
+      const elapsed = performance.now() - touchTap.time;
+      if (elapsed > 600) return; // Ignore long touches/drags
+      const ndcX = (touchTap.x / dims.w) * 2 - 1;
+      const ndcY = -(touchTap.y / dims.h) * 2 + 1;
+      ray.setFromCamera({ x: ndcX, y: ndcY }, camera);
+      const hits = ray.intersectObjects(hitMeshes, false);
+      if (hits.length) {
+        const targetBook = bookByHit(hits[0].object);
+        if (targetBook) {
+          open(targetBook);
+        }
+      }
+    }, { passive: true });
 
     canvasEl.addEventListener('pointermove', (e) => {
       if (ptr.id !== null && e.pointerId !== ptr.id) return;
@@ -1235,6 +1298,17 @@
       }
       ptr.down = false;
       if (isTouch()) rayBook = null;
+    });
+
+    window.addEventListener('pointercancel', (e) => {
+      if (ptr.id !== null && e.pointerId === ptr.id) {
+        ptr.id = null;
+        ptr.down = false;
+        if (dragBook) {
+          dragBook.springs.drag.t = 0;
+          dragBook = null;
+        }
+      }
     });
 
     const onKeydown = (e) => {
