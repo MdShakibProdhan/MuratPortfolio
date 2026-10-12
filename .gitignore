@@ -1,0 +1,7 @@
+# Archives & temporary download folders
+Down.rar
+Down/
+
+# OS metadata
+.DS_Store
+Thumbs.db
